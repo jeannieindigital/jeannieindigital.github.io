@@ -1,0 +1,58 @@
+# CSS
+
+/*Archive Categories*/
+}
+.archive_categories span:after { content: " " }
+.archive_categories span:last-child:after { content: "" }
+.archive_categories a {
+  background-color: #eee;
+  border-bottom: none;
+  border-radius: .35em;
+  box-shadow: none;
+  color: #444;
+  font-size: medium !important;
+  padding: .25em .50em .25em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: none;
+  transition-timing-function: none;
+  white-space: nowrap;
+}
+.archive_categories a:hover {
+  background: #fcdae9;
+  color: #ee4792;
+}
+.archive_listings {
+  font-size: medium;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+# layouts/list.archivehtml.html
+
+{{ define "main" }}
+<p class="archive_listings">Categories</p>
+<p></p>
+	{{ $list := ($.Site.GetPage "taxonomyTerm" "categories").Pages }}
+	{{ if gt (len $list) 0 }}
+		<div style="border-bottom: 1px solid lightgray; padding-bottom: 15px; margin-bottom: 30px;">
+			{{ range $list }}
+				<span class="archive_categories"><a href="{{ .Permalink }}">{{ .Title }}</a></span>
+			{{ end }}
+		</div>
+	{{ end }}
+	
+<p class="archive_listings">Posts</p>
+	{{ $list := (where .Site.Pages "Type" "post") }}
+	{{ range $list }}
+
+		<p class="h-entry">
+			<a href="{{ .Permalink }}" class="u-url"><span style="text-transform:uppercase" class="dt-published" datetime="{{ .Date.Format "2006-01-02T15:04:05-0700" }}">{{ .Date.Format "2006 Jan 02 @ 03:04 PM" }}</span></a>:
+			<span class="p-name"><b>{{ .Title }}</b></span> 
+			<span class="p-summary">: {{ .Summary | truncate 50 }}</span>
+		</p>
+
+	{{ end }}
+
+{{ end }}
